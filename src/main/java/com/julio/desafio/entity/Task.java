@@ -12,6 +12,7 @@ import java.util.Objects;
 public class Task {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
     private String title;
     private String description;
