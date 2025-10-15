@@ -7,10 +7,9 @@ import com.julio.desafio.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/projects")
@@ -28,6 +27,12 @@ public class ProjectController {
         project.setStartDate(projectRequest.startDate());
         projectService.createProject(project);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ProjectResponse(project.getName(), project.getDescription(), project.getStartDate()));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Project>> listOfProject(){
+        List<Project> projects = projectService.listOfProjects();
+        return ResponseEntity.ok(projects);
     }
 
 }

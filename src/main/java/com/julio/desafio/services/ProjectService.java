@@ -18,7 +18,7 @@ public class ProjectService {
 
 
     public Project createProject(Project newproject){
-        return   projectRepository.save(newproject);
+        return  projectRepository.save(newproject);
     }
 
     public List<Project> listOfProjects(){
