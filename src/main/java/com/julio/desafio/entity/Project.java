@@ -20,7 +20,7 @@ public class Project {
     private Date startDate;
     private Date endDate;
 
-    @OneToMany
+    @OneToMany(mappedBy = "projectId")
     private Set<Task> tasks;
 
     public Project() {

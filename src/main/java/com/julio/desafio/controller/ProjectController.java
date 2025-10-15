@@ -1,8 +1,11 @@
 package com.julio.desafio.controller;
 
+import com.julio.desafio.dtos.ProjectRequest;
+import com.julio.desafio.dtos.ProjectResponse;
 import com.julio.desafio.entity.Project;
 import com.julio.desafio.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +21,13 @@ public class ProjectController {
 
 
     @PostMapping
-    public ResponseEntity<Project> createProject(@RequestBody Project newproject){
-        Project project = projectService.createProject(newproject);
-        return ResponseEntity.ok(project);
+    public ResponseEntity<ProjectResponse> createProject(@RequestBody ProjectRequest projectRequest){
+        Project project = new Project();
+        project.setName(projectRequest.name());
+        project.setDescription(projectRequest.description());
+        project.setStartDate(projectRequest.startDate());
+        projectService.createProject(project);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProjectResponse(project.getName(), project.getDescription(), project.getStartDate()));
     }
 
 }
