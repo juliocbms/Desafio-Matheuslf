@@ -3,6 +3,7 @@ package com.julio.desafio.controller;
 import com.julio.desafio.dtos.ProjectRequest;
 import com.julio.desafio.dtos.ProjectResponse;
 import com.julio.desafio.entity.Project;
+import com.julio.desafio.mapper.ProjectMapper;
 import com.julio.desafio.services.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,16 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private ProjectMapper projectMapper;
+
 
     @PostMapping
     public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody ProjectRequest projectRequest){
-        Project project = new Project();
-        project.setName(projectRequest.name());
-        project.setDescription(projectRequest.description());
-        project.setStartDate(projectRequest.startDate());
-        projectService.createProject(project);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ProjectResponse(project.getName(), project.getDescription(), project.getStartDate()));
+        Project projectToSave = projectMapper.toEntity(projectRequest);
+        Project savedProject = projectService.createProject(projectToSave);
+        ProjectResponse response = projectMapper.toResponse(savedProject);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
