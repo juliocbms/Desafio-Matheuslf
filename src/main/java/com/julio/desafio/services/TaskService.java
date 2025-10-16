@@ -1,6 +1,7 @@
 package com.julio.desafio.services;
 
 import com.julio.desafio.dtos.TaskRequest;
+import com.julio.desafio.dtos.TaskUpdateRequest;
 import com.julio.desafio.entity.Project;
 import com.julio.desafio.entity.Task;
 import com.julio.desafio.mapper.TaskMapper;
@@ -31,6 +32,12 @@ public class TaskService {
         return taskRepository.save(newTask);
     }
 
-
+public Task updateTask(Long id, TaskUpdateRequest dto){
+        taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task não encontrada com o ID: " + id));
+        Task newTask = taskMapper.updateToEntity(dto);
+        newTask.setId(id);
+        newTask.setStatus(dto.status());
+        return taskRepository.save(newTask);
+}
 
 }

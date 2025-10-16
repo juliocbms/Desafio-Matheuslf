@@ -2,6 +2,7 @@ package com.julio.desafio.mapper;
 
 import com.julio.desafio.dtos.TaskRequest;
 import com.julio.desafio.dtos.TaskResponse;
+import com.julio.desafio.dtos.TaskUpdateRequest;
 import com.julio.desafio.entity.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,4 +13,5 @@ public interface TaskMapper {
     @Mapping(target = "projectId", ignore = true)
     Task toEntity(TaskRequest request);
     TaskResponse toResponse(Task task);
+    Task updateToEntity(TaskUpdateRequest updateRequest);
 }
