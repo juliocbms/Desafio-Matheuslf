@@ -1,5 +1,6 @@
 package com.julio.desafio.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.julio.desafio.enums.Priority;
 import com.julio.desafio.enums.Status;
 import jakarta.persistence.*;
@@ -22,6 +23,7 @@ public class Task {
 
     @JoinColumn(name = "projectId")
     @ManyToOne
+
     private Project projectId;
 
     public Task() {
