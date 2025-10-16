@@ -4,6 +4,7 @@ import com.julio.desafio.dtos.ProjectRequest;
 import com.julio.desafio.dtos.ProjectResponse;
 import com.julio.desafio.entity.Project;
 import com.julio.desafio.services.ProjectService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ProjectController {
 
 
     @PostMapping
-    public ResponseEntity<ProjectResponse> createProject(@RequestBody ProjectRequest projectRequest){
+    public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody ProjectRequest projectRequest){
         Project project = new Project();
         project.setName(projectRequest.name());
         project.setDescription(projectRequest.description());
