@@ -17,7 +17,7 @@ public class Task {
     @Id
     private Long id;
 
-    @Size(min = 5, max = 150, message = " O nome deve ter de 5 a 150 caracteres")
+
     private String title;
     private String description;
     private Status status;

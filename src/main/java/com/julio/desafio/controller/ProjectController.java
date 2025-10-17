@@ -5,6 +5,7 @@ import com.julio.desafio.dtos.ProjectResponse;
 import com.julio.desafio.entity.Project;
 import com.julio.desafio.mapper.ProjectMapper;
 import com.julio.desafio.services.ProjectService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class ProjectController {
     private ProjectMapper projectMapper;
 
 
+    @Operation(summary = "Create some project")
     @PostMapping
     public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody ProjectRequest projectRequest){
         Project projectToSave = projectMapper.toEntity(projectRequest);
@@ -32,6 +34,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Operation(summary = "List of projects")
     @GetMapping
     public ResponseEntity<List<Project>> listOfProject(){
         List<Project> projects = projectService.listOfProjects();

@@ -15,5 +15,5 @@ public interface TaskMapper {
 
     @Mapping(source = "projectId.id", target = "projectId")
     TaskResponse toResponse(Task task);
-    Task updateToEntity(TaskUpdateRequest updateRequest);
+
 }

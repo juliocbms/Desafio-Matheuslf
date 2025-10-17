@@ -17,7 +17,7 @@ public class Project {
     @Id
     private Long id;
 
-    @Size(min = 3, max = 100, message = " O nome deve ter de 3 a 100 caracteres")
+
     private String name;
     private String description;
     private Date startDate;

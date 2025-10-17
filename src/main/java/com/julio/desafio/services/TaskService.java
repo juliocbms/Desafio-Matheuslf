@@ -7,7 +7,12 @@ import com.julio.desafio.entity.Task;
 import com.julio.desafio.mapper.TaskMapper;
 import com.julio.desafio.repository.ProjectRepository;
 import com.julio.desafio.repository.TaskRepository;
+import com.julio.desafio.services.exceptions.DatabaseException;
+import com.julio.desafio.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,9 +38,23 @@ public class TaskService {
     }
 
     public Task updateTask(Long id, TaskUpdateRequest dto){
-       Task taskToUpdate = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task não encontrada com o ID: " + id));
-       taskToUpdate.setStatus(dto.status());
-        return taskRepository.save(taskToUpdate);
+        try {
+            Task taskToUpdate = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task não encontrada com o ID: " + id));
+            taskToUpdate.setStatus(dto.status());
+            return taskRepository.save(taskToUpdate);
+        } catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    public void deleteTask(Long id){
+        try{
+            taskRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
 }
