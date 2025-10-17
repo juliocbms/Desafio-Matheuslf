@@ -30,8 +30,8 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping
-    public ResponseEntity<TaskResponse> updateTask(@Valid @RequestParam Long id, @RequestBody TaskUpdateRequest taskUpdateRequest){
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<TaskResponse> updateTask(@Valid @PathVariable Long id, @RequestBody TaskUpdateRequest taskUpdateRequest){
         Task updatedTask = taskService.updateTask(id,taskUpdateRequest);
         TaskResponse response = taskMapper.toResponse(updatedTask);
         return  ResponseEntity.status(HttpStatus.ACCEPTED).body(response);

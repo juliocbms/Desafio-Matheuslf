@@ -11,5 +11,5 @@ public record TaskResponse(String title,
                            Status status,
                            Priority priority,
                            Date dueDate,
-                           Long projectId) {
+                           Project projectId) {
 }
