@@ -15,6 +15,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TaskService {
 
@@ -38,20 +40,17 @@ public class TaskService {
     }
 
     public Task updateTask(Long id, TaskUpdateRequest dto){
-        try {
-            Task taskToUpdate = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task não encontrada com o ID: " + id));
+            Task taskToUpdate = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
             taskToUpdate.setStatus(dto.status());
             return taskRepository.save(taskToUpdate);
-        } catch (EntityNotFoundException e){
-            throw new ResourceNotFoundException(id);
-        }
     }
 
     public void deleteTask(Long id){
+        if (!taskRepository.existsById(id)) {
+            throw new ResourceNotFoundException(id);
+        }
         try{
             taskRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e){
-            throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e){
             throw new DatabaseException(e.getMessage());
         }

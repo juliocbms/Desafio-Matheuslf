@@ -6,6 +6,11 @@ import com.julio.desafio.entity.Project;
 import com.julio.desafio.mapper.ProjectMapper;
 import com.julio.desafio.services.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,9 +18,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/projects")
+@Tag(name = "Projetos", description = "Endpoints para criar e gerenciar projetos")
 public class ProjectController {
 
     @Autowired
@@ -24,8 +31,16 @@ public class ProjectController {
     @Autowired
     private ProjectMapper projectMapper;
 
-
-    @Operation(summary = "Create some project")
+    @Operation(
+            summary = "Cria um novo projeto",
+            description = "Registra um novo projeto no banco de dados com base nos dados fornecidos."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Projeto criado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ProjectResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos", content = @Content)
+    })
     @PostMapping
     public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody ProjectRequest projectRequest){
         Project projectToSave = projectMapper.toEntity(projectRequest);
@@ -34,11 +49,19 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @Operation(summary = "List of projects")
+    @Operation(
+            summary = "Lista todos os projetos",
+            description = "Retorna uma lista com todos os projetos cadastrados no sistema."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de projetos retornada com sucesso")
+    })
     @GetMapping
-    public ResponseEntity<List<Project>> listOfProject(){
+    public ResponseEntity<List<ProjectResponse>> listOfProject(){
         List<Project> projects = projectService.listOfProjects();
-        return ResponseEntity.ok(projects);
+        List<ProjectResponse> response = projects.stream()
+                .map(projectMapper::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
-
 }
