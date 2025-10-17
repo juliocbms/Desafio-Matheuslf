@@ -2,6 +2,7 @@ package com.julio.desafio.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 import java.util.Objects;
@@ -15,6 +16,8 @@ public class Project {
     @Column(name = "projectId")
     @Id
     private Long id;
+
+    @Size(min = 3, max = 100, message = " O nome deve ter de 3 a 100 caracteres")
     private String name;
     private String description;
     private Date startDate;

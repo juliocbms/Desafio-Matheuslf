@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.julio.desafio.enums.Priority;
 import com.julio.desafio.enums.Status;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 import java.util.Objects;
@@ -15,6 +16,8 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+
+    @Size(min = 5, max = 150, message = " O nome deve ter de 5 a 150 caracteres")
     private String title;
     private String description;
     private Status status;
