@@ -6,6 +6,7 @@ import com.julio.desafio.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,29 +18,38 @@ public class Task {
     @Id
     private Long id;
 
-
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "description")
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private Status status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority")
     private Priority priority;
-    private Date dueDate;
 
-    @JoinColumn(name = "projectId")
+    @Column(name = "due_date")
+    private LocalDate dueDate;
+
+    @JoinColumn(name = "project_id")
     @ManyToOne
-
-    private Project projectId;
+    private Project project;
 
     public Task() {
     }
 
-    public Task(Long id, String title, String description, Status status, Priority priority, Date dueDate, Project projectId) {
+    public Task(Long id, String title, String description, Status status, Priority priority, LocalDate dueDate, Project project) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
         this.priority = priority;
         this.dueDate = dueDate;
-        this.projectId = projectId;
+        this.project = project;
     }
 
     public Long getId() {
@@ -82,20 +92,20 @@ public class Task {
         this.priority = priority;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
     public Project getProjectId() {
-        return projectId;
+        return project;
     }
 
-    public void setProjectId(Project projectId) {
-        this.projectId = projectId;
+    public void setProjectId(Project project) {
+        this.project = project;
     }
 
     @Override

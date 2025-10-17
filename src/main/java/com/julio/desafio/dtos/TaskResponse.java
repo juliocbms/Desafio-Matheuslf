@@ -6,7 +6,8 @@ import com.julio.desafio.enums.Status;
 
 import java.util.Date;
 
-public record TaskResponse(String title,
+public record TaskResponse(Long id,
+                           String title,
                            String description,
                            Status status,
                            Priority priority,

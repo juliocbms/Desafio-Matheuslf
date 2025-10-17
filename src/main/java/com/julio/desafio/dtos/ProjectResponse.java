@@ -4,7 +4,8 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Date;
 
-public record ProjectResponse(String name,
+public record ProjectResponse(Long id,
+                              String name,
                               String description,
                               Date startDate) {
 }

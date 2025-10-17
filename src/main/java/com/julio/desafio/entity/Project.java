@@ -4,6 +4,7 @@ package com.julio.desafio.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
@@ -13,23 +14,28 @@ import java.util.Set;
 public class Project {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "projectId")
     @Id
     private Long id;
 
-
+    @Column(name = "name")
     private String name;
-    private String description;
-    private Date startDate;
-    private Date endDate;
 
-    @OneToMany(mappedBy = "projectId")
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Task> tasks;
 
     public Project() {
     }
 
-    public Project(Long id, String name, String description, Date startDate, Date endDate) {
+    public Project(Long id, String name, String description, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -61,19 +67,19 @@ public class Project {
         this.description = description;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
