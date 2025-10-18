@@ -4,13 +4,18 @@ import com.julio.desafio.dtos.TaskRequest;
 import com.julio.desafio.dtos.TaskUpdateRequest;
 import com.julio.desafio.entity.Project;
 import com.julio.desafio.entity.Task;
+import com.julio.desafio.enums.Priority;
+import com.julio.desafio.enums.Status;
 import com.julio.desafio.mapper.TaskMapper;
 import com.julio.desafio.repository.ProjectRepository;
 import com.julio.desafio.repository.TaskRepository;
+import com.julio.desafio.services.Specification.TaskSpecification;
 import com.julio.desafio.services.exceptions.DatabaseException;
 import com.julio.desafio.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -51,6 +56,11 @@ public class TaskService {
         } catch (DataIntegrityViolationException e){
             throw new DatabaseException(e.getMessage());
         }
+    }
+
+    public Page<Task> findTasksByCriteria(Status status, Priority priority, Long projectId, Pageable pageable) {
+        var spec = TaskSpecification.getTasksByCriteria(status, priority, projectId);
+        return taskRepository.findAll(spec, pageable);
     }
 
 }

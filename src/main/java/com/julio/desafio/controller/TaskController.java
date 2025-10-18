@@ -4,6 +4,8 @@ import com.julio.desafio.dtos.TaskResponse;
 import com.julio.desafio.dtos.TaskRequest;
 import com.julio.desafio.dtos.TaskUpdateRequest;
 import com.julio.desafio.entity.Task;
+import com.julio.desafio.enums.Priority;
+import com.julio.desafio.enums.Status;
 import com.julio.desafio.mapper.TaskMapper;
 import com.julio.desafio.services.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +17,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +52,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+
     @Operation(
             summary = "Atualiza o status de uma tarefa",
             description = "Altera o status de uma tarefa existente (ex: de TODO para IN_PROGRESS)."
@@ -67,6 +72,7 @@ public class TaskController {
         return ResponseEntity.ok(response);
     }
 
+
     @Operation(
             summary = "Deleta uma tarefa",
             description = "Remove uma tarefa do banco de dados com base no seu ID."
@@ -81,5 +87,19 @@ public class TaskController {
             @PathVariable Long id){
         taskService.deleteTask(id);
         return  ResponseEntity.noContent().build();
+    }
+
+
+    @Operation(summary = "Busca tarefas com filtros e paginação")
+    @GetMapping
+    public ResponseEntity<Page<TaskResponse>> findTasks(
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false) Priority priority,
+            @RequestParam(required = false, name = "projectId") Long projectId,
+            Pageable pageable) {
+
+        Page<Task> tasksPage = taskService.findTasksByCriteria(status, priority, projectId, pageable);
+        Page<TaskResponse> responsePage = tasksPage.map(taskMapper::toResponse);
+        return ResponseEntity.ok(responsePage);
     }
 }
