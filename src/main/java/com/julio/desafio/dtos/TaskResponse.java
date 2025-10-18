@@ -4,6 +4,7 @@ import com.julio.desafio.entity.Project;
 import com.julio.desafio.enums.Priority;
 import com.julio.desafio.enums.Status;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public record TaskResponse(Long id,
@@ -11,6 +12,6 @@ public record TaskResponse(Long id,
                            String description,
                            Status status,
                            Priority priority,
-                           Date dueDate,
+                           LocalDate dueDate,
                            Long projectId) {
 }
