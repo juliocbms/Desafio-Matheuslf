@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,13 +26,11 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
-
     @Autowired
     private ProjectMapper projectMapper;
 
     @Operation(
-            summary = "Cria um novo projeto",
-            description = "Registra um novo projeto no banco de dados com base nos dados fornecidos."
+            summary = "Cria um novo projeto", description = "Registra um novo projeto no banco de dados com base nos dados fornecidos."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Projeto criado com sucesso",
@@ -50,8 +47,7 @@ public class ProjectController {
     }
 
     @Operation(
-            summary = "Lista todos os projetos",
-            description = "Retorna uma lista com todos os projetos cadastrados no sistema."
+            summary = "Lista todos os projetos", description = "Retorna uma lista com todos os projetos cadastrados no sistema."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de projetos retornada com sucesso")

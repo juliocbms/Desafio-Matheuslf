@@ -9,13 +9,10 @@ import com.julio.desafio.repository.ProjectRepository;
 import com.julio.desafio.repository.TaskRepository;
 import com.julio.desafio.services.exceptions.DatabaseException;
 import com.julio.desafio.services.exceptions.ResourceNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -34,7 +31,7 @@ public class TaskService {
         Project project = projectRepository.findById(dto.projectId())
                 .orElseThrow(() -> new RuntimeException("Projeto não encontrado com o ID: " + dto.projectId()));
         Task newTask = taskMapper.toEntity(dto);
-        newTask.setProjectId(project);
+        newTask.setProject(project);
 
         return taskRepository.save(newTask);
     }

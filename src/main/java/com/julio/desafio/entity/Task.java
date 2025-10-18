@@ -104,11 +104,11 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public Project getProjectId() {
+    public Project getProject() {
         return project;
     }
 
-    public void setProjectId(Project project) {
+    public void setProject(Project project) {
         this.project = project;
     }
 
