@@ -5,11 +5,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.julio.desafio.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
 import java.util.Optional;
 
 public class TokenConfig {
+
 
     private String secret = "secret";
 
@@ -23,19 +25,20 @@ public class TokenConfig {
                 .sign(algorithm);
     }
 
-    public Optional<JWTUserData> validadeToken(String token){
+    public Optional<JWTUserData> validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             DecodedJWT decode = JWT.require(algorithm)
                     .build().verify(token);
 
-            return Optional.of(JWTUserData.bulder()
-                    .userId(decode.getClaim("userId").asLong())
-                    .email(decode.getSubject())
-                    .build());
-        }
-        catch (JWTVerificationException exception){
+            Long userId = decode.getClaim("userId").asLong();
+            String email = decode.getSubject();
+            JWTUserData userData = new JWTUserData(userId, email);
+
+            return Optional.of(userData);
+
+        } catch (JWTVerificationException ex) {
             return Optional.empty();
         }
     }
