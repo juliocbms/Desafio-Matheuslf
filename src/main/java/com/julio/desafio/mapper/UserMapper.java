@@ -12,6 +12,7 @@ public interface UserMapper {
 
     @Mapping(source = "senha", target = "password")
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     User toEntity(RegisterUserRequest request);
     RegisterUserResponse toRegisterResponse(User user);
 }
