@@ -25,3 +25,13 @@ jobs:
       with:
         java-version: '21'
         distribution: 'adopt'
+        cache: 'maven'
+
+    - name: Run tests
+      run: mvn test
+
+    - name: Build API desafio
+      run: mvn spring-boot:build-image
+
+    - name: Docker Compose Build
+      run: docker compose build
