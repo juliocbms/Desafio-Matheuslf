@@ -16,7 +16,7 @@ services:
       - julio-network
 
   api:
-    image: juliocbmss/desafio:0.0.1-SNAPSHOT
+    image: juliocbms/desafio:0.0.1-SNAPSHOT
     container_name: desafio_app
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://desafio-db:5432/Desafio
