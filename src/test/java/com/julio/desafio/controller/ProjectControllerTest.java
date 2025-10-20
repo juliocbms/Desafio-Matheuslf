@@ -1,19 +1,18 @@
 package com.julio.desafio.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.julio.desafio.config.TokenConfig;
 import com.julio.desafio.dtos.ProjectRequest;
 import com.julio.desafio.dtos.ProjectResponse;
 import com.julio.desafio.entity.Project;
 import com.julio.desafio.mapper.ProjectMapper;
+import com.julio.desafio.services.AuthConfig;
 import com.julio.desafio.services.ProjectService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,7 +24,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ProjectController.class)
+@WebMvcTest(controllers = ProjectController.class,
+        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 class ProjectControllerTest {
 
     @Autowired
@@ -40,21 +40,11 @@ class ProjectControllerTest {
     @MockBean
     private ProjectMapper projectMapper;
 
-    @TestConfiguration
-    static class TestConfig {
+    @MockBean
+    private TokenConfig tokenConfig;
 
-        @Bean
-        @Primary
-        public ProjectService projectService() {
-            return Mockito.mock(ProjectService.class);
-        }
-
-        @Bean
-        @Primary
-        public ProjectMapper projectMapper() {
-            return Mockito.mock(ProjectMapper.class);
-        }
-    }
+    @MockBean
+    private AuthConfig authorizationService;
 
     @Test
     void criandoProjeto_ComDadosValidos_DeveRetornarCriado() throws Exception {

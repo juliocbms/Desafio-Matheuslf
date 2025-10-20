@@ -1,0 +1,37 @@
+services:
+
+  desafio-db:
+    image: postgres:18.0
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      POSTGRES_DB: Desafio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - julio-network
+
+  api:
+    image: juliocbmss/desafio:0.0.1-SNAPSHOT
+    container_name: desafio_app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://desafio-db:5432/Desafio
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8080:8080"
+    depends_on:
+      - desafio-db
+    networks:
+      - julio-network
+
+networks:
+  julio-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
