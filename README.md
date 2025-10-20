@@ -19,7 +19,7 @@ O projeto foi arquitetado desde sua concepção para ser **robusto**, **escaláv
 
 ##  2. Arquitetura e Decisões de Design
 
-A aplicação segue uma **Arquitetura em Camadas (Layered Architecture)**, garantindo **Separação de Responsabilidades (Separation of Concerns)**.
+A aplicação segue uma **Arquitetura em Camadas (Layered Architecture)**), que implementa o padrão **Model-View-Controller (MVC)** adaptado para o contexto de APIs RESTful, garantindo uma clara S **Separação de Responsabilidades** 
 
 
 ###  2.1 Estratégia de Persistência: Flyway + Hibernate
