@@ -101,7 +101,7 @@
                 <configuration>
                     <image>
                         <name>
-                            juliocbmss/${project.artifactId}:${project.version}
+                            juliocbms/${project.artifactId}:${project.version}
                         </name>
                     </image>
                     <pullPolicy>IF_NOT_PRESENT</pullPolicy>
