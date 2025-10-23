@@ -54,7 +54,7 @@ public class ProjectController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de projetos retornada com sucesso")
     })
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<Page<ProjectResponse>> listOfProject(Pageable pageable){
         Page<Project> projectsPage = projectService.listOfProjects(pageable);
         Page<ProjectResponse> responsePage = projectsPage.map(projectMapper::toResponse);
