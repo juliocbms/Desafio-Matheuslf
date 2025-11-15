@@ -3,6 +3,7 @@ package com.julio.desafio.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 import java.util.Date;

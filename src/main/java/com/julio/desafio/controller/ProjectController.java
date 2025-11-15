@@ -1,5 +1,6 @@
 package com.julio.desafio.controller;
 
+import com.julio.desafio.controller.Assembler.ProjectModelAssembler;
 import com.julio.desafio.dtos.ProjectRequest;
 import com.julio.desafio.dtos.ProjectResponse;
 import com.julio.desafio.entity.Project;
@@ -15,12 +16,15 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/projects")
@@ -31,6 +35,10 @@ public class ProjectController {
     private ProjectService projectService;
     @Autowired
     private ProjectMapper projectMapper;
+    @Autowired
+    private  ProjectModelAssembler projectAssembler;
+    @Autowired
+    private  PagedResourcesAssembler<Project> pagedAssembler;
 
     @Operation(
             summary = "Cria um novo projeto", description = "Registra um novo projeto no banco de dados com base nos dados fornecidos."
@@ -56,9 +64,19 @@ public class ProjectController {
             @ApiResponse(responseCode = "200", description = "Lista de projetos retornada com sucesso")
     })
     @GetMapping(value = "/admin", produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Page<ProjectResponse>> listOfProject(Pageable pageable){
+    public ResponseEntity<PagedModel<EntityModel<ProjectResponse>>> listOfProject(Pageable pageable){
         Page<Project> projectsPage = projectService.listOfProjects(pageable);
-        Page<ProjectResponse> responsePage = projectsPage.map(projectMapper::toResponse);
-        return ResponseEntity.ok(responsePage);
+        PagedModel<EntityModel<ProjectResponse>> pagedModel = pagedAssembler.toModel(
+                projectsPage,
+                project -> projectAssembler.toModel(projectMapper.toResponse(project))
+        );
+        return ResponseEntity.ok(pagedModel);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Project>> findById(@PathVariable Long id){
+        Optional<Project> response = projectService.findById(id);
+        return ResponseEntity.ok(response);
+
     }
 }

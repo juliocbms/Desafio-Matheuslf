@@ -33,8 +33,6 @@ public class UserService {
 
         logger.info("Trying register user");
 
-        logger.error("Error founded");
-
         User newUser = userMapper.toEntity(request);
 
         try {
@@ -44,8 +42,9 @@ public class UserService {
                 newUser.setRoles(Set.of(Role.ROLE_USER));
             }
             newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-
+            logger.info("User with id: "+ newUser.getId() + " created");
             return repository.save(newUser);
+
         }
         catch (IllegalArgumentException e){
             logger.warn("Invalid argument while registering user: {}", e.getMessage());
